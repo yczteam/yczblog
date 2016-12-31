@@ -74,6 +74,9 @@ WSGI_APPLICATION = 'yczblog.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/1.10/ref/settings/#databases
 
+from mongoengine import connect
+connect('ycz', username='yczblog', password='1234')
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.dummy',
