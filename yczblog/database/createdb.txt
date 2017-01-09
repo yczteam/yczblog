@@ -1,0 +1,7 @@
+use ycz
+db.createUser( { user: "yczblog", pwd: "1234", roles: [ "readWrite"]} )
+
+db.runCommand({find: "User",filter: { email: "yunusbulut@yahoo.com"}})
+
+db.post.insert({title: 'MongoDB Overview',author: 'yunusbulut@yahoo.com',postedon: new Date(2013,11,10,2,35),content: 'MongoDB is no sql database',tags: ['mongodb', 'database', 'NoSQL'],})
+db.post.insert({title: 'NoSQL Database',author: 'yunusbulut@yahoo.com',postedon: new Date(2013,11,10,2,35),content: 'NoSQL database doesn't have tables',tags: ['mongodb', 'database', 'NoSQL'],comments: [{author:'yunusbulut@yahoo.com',commentedon:new Date(2013,11,10,2,35),content:'My first comment',}],})

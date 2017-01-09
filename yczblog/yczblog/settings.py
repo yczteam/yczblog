@@ -11,7 +11,7 @@ https://docs.djangoproject.com/en/1.10/ref/settings/
 """
 
 import os
-from mongoengine import connect
+from pymodm import connect
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -28,11 +28,10 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
-
 # Application definition
 
 INSTALLED_APPS = [
-    'signing.apps.SigningConfig',
+    'blog.apps.BlogConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -77,14 +76,14 @@ WSGI_APPLICATION = 'yczblog.wsgi.application'
 # https://docs.djangoproject.com/en/1.10/ref/settings/#databases
 
 
-connect('ycz', username='yczblog', password='1234', host = 'localhost', port=27017 )
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.dummy',
+        #'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
 }
+connect("mongodb://yczblog:1234@localhost:27017/ycz", alias='ycz-blog')
 
 # Password validation
 # https://docs.djangoproject.com/en/1.10/ref/settings/#auth-password-validators
@@ -117,7 +116,6 @@ USE_I18N = True
 USE_L10N = True
 
 USE_TZ = True
-
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.10/howto/static-files/
