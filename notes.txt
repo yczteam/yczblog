@@ -1,0 +1,1 @@
+1) In eclipse PyDev, put pymodm in forced built-ins for the python interpreter.
