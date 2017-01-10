@@ -15,12 +15,15 @@ def main(request):
     return render(request, 'blog/index.html', context)
 
 def signUp(request):
+    
     return render(request, 'blog/signup.html')
 
 def signIn(request):
+    
     return render(request, 'blog/signin.html')
 
 def register(request):
+    
     email = request.POST['email']
     username = request.POST['username']
     password = request.POST['password']
@@ -31,7 +34,12 @@ def register(request):
     
     services.registerUser(email, username, password, firstname, middlename, surname, createtime)
     
-    return render(request, 'blog/index.html')
+    userObj = {}
+    userObj['username'] = username
+    userObj['email'] = email
+    request.session['user'] = userObj
+    
+    return main(request)
 
 def checkUser(request):
         
@@ -45,7 +53,47 @@ def checkUser(request):
         }
         return render(request, 'blog/signin.html',context)
     else:
-        
-        return render(request, 'blog/signin.html')
+        #adds user to the session
+        userObj = {}
+        userObj['username'] = auth_user[0].username
+        userObj['email'] = auth_user[0].email
+        request.session['user'] = userObj
+        return main(request)
+
+def signOut(request):
+    
+    del request.session['user']
+    #request.session.modified = True
+    return main(request)
+
+    
+def postContent(request, post_id):
+    
+    post = services.getPostById(post_id)
+    
+    context = {
+        'post': post,
+    }
+    
+    return render(request, 'blog/postContent.html', context)
+
+def writePost(request):
+    
+    return render(request, 'blog/writePost.html')
+
+def savePost(request):
+    
+    blogpost = request.POST['blogpost']
+    email = request.session['user']['email']
+    user = services.getUserByEmail(email)[0]
+    title = "standart başlık"
+    postedon = datetime.datetime.now()
+    tags = ['yazılım','yapay zeka']
+    
+    services.savePost(title, user, postedon, blogpost, tags)
+    
+    return main(request)
+    
+    
 
 
