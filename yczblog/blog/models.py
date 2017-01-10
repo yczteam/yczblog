@@ -38,6 +38,7 @@ class User(MongoModel):
     
 
 class Comment(EmbeddedMongoModel):
+    
     author = fields.ReferenceField(User)
     commentedon = fields.DateTimeField()
     content = fields.CharField()
@@ -47,6 +48,8 @@ class Comment(EmbeddedMongoModel):
 
 
 class Post(MongoModel):
+    
+    id = fields.ObjectIdField(primary_key = True)
     title = fields.CharField()
     author = fields.ReferenceField(User)
     postedon = fields.DateTimeField()
@@ -56,6 +59,6 @@ class Post(MongoModel):
     
     class Meta:
         connection_alias = 'ycz-blog'
-    
+
     
     

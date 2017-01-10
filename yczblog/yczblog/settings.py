@@ -71,6 +71,9 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'yczblog.wsgi.application'
 
+#mongodb hazirlamadigim icin simdilik filea yaziyorum
+SESSION_ENGINE = 'django.contrib.sessions.backends.file'
+
 
 # Database
 # https://docs.djangoproject.com/en/1.10/ref/settings/#databases

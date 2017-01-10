@@ -40,20 +40,22 @@
             <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="collapse navbar-collapse navbar-ex1-collapse">
                 <ul class="nav navbar-nav">
-                    <li class="active"><a href="{% url 'blog:main' %}"><i class="fa fa-home"></i> Home</a>
+                    <li class="active"><a href="{% url 'blog:main' %}"><i class="fa fa-home"></i> Ana Sayfa</a>
                     </li>
-                    <li><a href=""><i class="fa fa-book"></i> Posts</a>
+                    <li><a href=""><i class="fa fa-book"></i> Blog Yazıları</a>
                     </li>
-                    <li><a href=""><i class="fa fa-envelope"></i> Contact</a>
+                    <li><a href=""><i class="fa fa-envelope"></i> İletişim</a>
                     </li>
-					<li><a href=""><i class="fa fa-user"></i> About</a>
+					<li><a href=""><i class="fa fa-user"></i> Hakkında</a>
                     </li>
-                    <li><a href="{% url 'blog:signIn' %}"><i class="fa fa-user"></i> Sign In</a>
+                    {% if request.session.user %}
+                    	<li><a href="{% url 'blog:writePost' %}"><i class="fa fa-user"></i> Bir yazı paylaşın </a>
+                    	<li><a href="{% url 'blog:signIn' %}"><i class="fa fa-user"></i>{{ request.session.user.username }}</a>
+                    	<li><a href="{% url 'blog:signOut' %}"><i class="fa fa-user"></i> Çıkış yap</a>
+                    {% else %}
+                    	<li><a href="{% url 'blog:signIn' %}"><i class="fa fa-user"></i> Giriş yap</a>                    	
+                    {% endif %}
                     </li>
-					
-					<form class="navbar-form navbar-right">
-      					<input type="text" class="form-control col-lg-8" placeholder="Search...">
-   					</form>
 					
                 </ul>
             </div>
@@ -63,27 +65,28 @@
      
     </nav>
 
-    <div class="container">
+    <div class="container" style="margin-top:50px;">
 
         <div class="row">
             <div class="col-lg-8">
 
                 <!-- the actual blog post: title/author/date/content -->
-                <h1><a href="">Blog Post Template for Bootstrap</a></h1>
-                <p class="lead"><i class="fa fa-user"></i> by <a href="">Super User</a>
+                <h1>{{ post.title }}</h1>
+                <p class="lead"><i class="fa fa-user"></i> by <a href="">{{ post.author.username }}</a>
                 </p>
                 <hr>
-                <p><i class="fa fa-calendar"></i> Posted on August 24, 2014 at 9:00 PM</p>
-				<p><i class="fa fa-tags"></i> Tags: <a href=""><span class="badge badge-info">Bootstrap</span></a> <a href=""><span class="badge badge-info">Web</span></a> <a href=""><span class="badge badge-info">CSS</span></a> <a href=""><span class="badge badge-info">HTML</span></a></p>
+                <p><i class="fa fa-calendar"></i> Posted on {{ post.postedon }}</p>
+				<p><i class="fa fa-tags"></i> Tags: 
+				{% for tag in post.tags %}
+				<span class="badge badge-info">{{ tag }}</span>
+				{% endfor %}
+				</p>
 					
                 <hr>
                 <img src="http://placehold.it/900x300" class="img-responsive">
                 <hr>
-                <p class="lead">Welcome to Bootstrap Blog Template! This is a blog template example, built with Bootstrap. Contains "tools" that would be needed in a post.</p>
-                <p>Lorem ipsum dolor Lorem ipsum dolor Lorem ipsum dolor Lorem ipsum dolor Lorem ipsum dolor Lorem ipsum dolor.</p>
-                <p>Lorem ipsum dolor Lorem ipsum dolor Lorem ipsum dolor Lorem ipsum dolor Lorem ipsum dolor Lorem ipsum dolor. Lorem ipsum dolor Lorem ipsum dolor Lorem ipsum dolor Lorem ipsum dolor Lorem ipsum dolor Lorem ipsum dolor.</p>
-                <p>Lorem ipsum dolor Lorem ipsum dolor Lorem ipsum dolor Lorem ipsum dolor Lorem ipsum dolor Lorem ipsum dolor. Lorem ipsum dolor Lorem ipsum dolor Lorem ipsum dolor Lorem ipsum dolor Lorem ipsum dolor Lorem ipsum dolor.</p>
-                <p>Lorem ipsum dolor Lorem ipsum dolor Lorem ipsum dolor Lorem ipsum dolor Lorem ipsum dolor Lorem ipsum dolor. Lorem ipsum dolor Lorem ipsum dolor Lorem ipsum dolor Lorem ipsum dolor Lorem ipsum dolor Lorem ipsum dolor.</p>
+                <p class="lead">{{ post.content }}</p>
+                
                 <br/>
 				<center><p><strong>Embed Twitter post:</strong>
                 
@@ -148,7 +151,7 @@
 
             </div>
 
-            <div class="col-lg-4">
+            <div class="col-lg-4" style="margin-top:50px;">
                 <div class="well">
                     <h4><i class="fa fa-search"></i> Blog Search...</h4>
                     <div class="input-group">
@@ -372,9 +375,11 @@ GitHub</a>
     </div>
     <!-- /.container -->
 
-    <!-- JavaScript -->
-    <script src="js/jquery-1.10.2.js"></script>
-    <script src="js/bootstrap.js"></script>
+    <!-- jQuery -->
+    <script src="{% static 'blog/jquery.js' %}"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="{% static 'bootstrap-3.3.7-dist/js/bootstrap.min.js' %}"></script>
 
 </body>
 

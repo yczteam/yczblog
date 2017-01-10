@@ -13,6 +13,7 @@
 
     <!-- Bootstrap Core CSS -->
     <link href="{% static 'bootstrap-3.3.7-dist/css/bootstrap.css' %}" rel="stylesheet">
+    <link href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
 
     <!-- Custom CSS -->
     <link href="{% static 'blog-home.css' %}" rel="stylesheet">
@@ -23,6 +24,7 @@
         <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
         <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
+    
 
 </head>
 
@@ -44,26 +46,29 @@
             <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="collapse navbar-collapse navbar-ex1-collapse">
                 <ul class="nav navbar-nav">
-                    <li class="active"><a href="{% url 'blog:main' %}"><i class="fa fa-home"></i> Home</a>
+                    <li class="active"><a href="{% url 'blog:main' %}"><i class="fa fa-home"></i> Ana Sayfa</a>
                     </li>
-                    <li><a href=""><i class="fa fa-book"></i> Posts</a>
+                    <li><a href=""><i class="fa fa-book"></i> Blog Yazıları</a>
                     </li>
-                    <li><a href=""><i class="fa fa-envelope"></i> Contact</a>
+                    <li><a href=""><i class="fa fa-envelope"></i> İletişim</a>
                     </li>
-					<li><a href=""><i class="fa fa-user"></i> About</a>
+					<li><a href=""><i class="fa fa-user"></i> Hakkında</a>
                     </li>
-                    <li><a href="{% url 'blog:signIn' %}"><i class="fa fa-user"></i> Sign In</a>
+                    {% if request.session.user %}
+                    	<li><a href="{% url 'blog:writePost' %}"><i class="fa fa-user"></i> Bir yazı paylaşın </a>
+                    	<li><a href="{% url 'blog:signIn' %}"><i class="fa fa-user"></i>{{ request.session.user.username }}</a>
+                    	<li><a href="{% url 'blog:signOut' %}"><i class="fa fa-user"></i> Çıkış yap</a>
+                    {% else %}
+                    	<li><a href="{% url 'blog:signIn' %}"><i class="fa fa-user"></i> Giriş yap</a>                    	
+                    {% endif %}
                     </li>
-					
-					<form class="navbar-form navbar-right">
-      					<input type="text" class="form-control col-lg-8" placeholder="Search...">
-   					</form>
 					
                 </ul>
             </div>
             <!-- /.navbar-collapse -->
         </div>
         <!-- /.container -->
+     
     </nav>
     
     <!-- Page Content -->
@@ -75,7 +80,7 @@
             <div class="col-md-8">
 
                 <h1 class="page-header">
-                    En Son Bloglar
+                    Son Yazılar
                 </h1>
                 
     				<ul>
@@ -92,7 +97,7 @@
 		                <img class="img-responsive" src="{% static 'images/language.png' %}" alt="">
 		                <hr>
 		                <p>{{ post.content }}</p>
-		                <a class="btn btn-primary" href="#">Read More <span class="glyphicon glyphicon-chevron-right"></span></a>
+		                <a class="btn btn-primary" href="{% url 'blog:postContent' post_id=post.id %}">Read More <span class="glyphicon glyphicon-chevron-right"></span></a>
 		
 		                <hr>
 					{% endfor %}
